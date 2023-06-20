@@ -1,0 +1,101 @@
+.box{
+    display: flex;
+}
+#container {
+    width: 70%;
+    background: darkseagreen;
+    border-radius: 10px;
+    padding: 30px 0;
+    background: url('../img/bg.jpg');
+}
+
+.container-border {
+    width: 90%;
+    margin: auto;
+    border-radius: 10px;
+    border: 2px solid orange;
+    background: rgba(255, 228, 225, 0.9);
+}
+
+.flex {
+    display: flex;
+    padding: 20px;
+}
+
+.detail {
+    margin-left: 30px;
+}
+
+.detail > div {
+    margin-bottom: 35px;
+}
+
+.introduce {
+    padding: 10px 20px 30px;
+    line-height: 30px;
+}
+
+.font-color {
+    color: blueviolet;
+}
+
+.rightConent {
+    /*display: flex;*/
+    /*justify-content: center;*/
+    margin: 20px;
+}
+
+#saveBtn {
+    width: 200px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    color: orange;
+    background: cornsilk;
+    border: 2px solid orange;
+    border-radius: 10px;
+}
+#saveBtn:hover{
+    color: #ffffff;
+    background: chocolate;
+}
+.inputBox{
+    margin-top: 60px;
+}
+.inputBox>input{
+    margin-bottom: 20px;
+}
+input {
+    outline: none;
+    display: block;
+    width: 200px;
+    height: 40px;
+    border: 2px solid orange;
+    border-radius: 10px;
+    color: #666;
+    text-indent: 20px;
+}
+
+input:focus {
+    outline: none;
+}
+
+.file-input {
+    position: absolute;
+    z-index: 10;
+    opacity: 0
+}
+
+.file-font {
+    position: absolute;
+    width: 200px;
+    height: 40px;
+    border: 2px solid orange;
+    border-radius: 10px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 40px;
+    background: #ffcc80;
+}
+
+

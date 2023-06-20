@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>生成名片图片</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <div class="box">
+        <div id="container">
+            <div class="container-border">
+                <div class="flex">
+                    <img id="img" style="width: 200px;height: 200px;" src="img/img.png" alt="">
+                    <div class="detail font-color">
+                        <div>姓名：<span class="x-nam">张</span></div>
+                        <div>性别：<span class="x-sex">男</span></div>
+                        <div>年龄：<span class="x-age">24</span></div>
+                        <div>手机：<span class="x-tel">123456789</span></div>
+                    </div>
+                </div>
+                <div class="introduce font-color">
+                    个人简介：来自河北省定州市东留春乡大王耨村
+                </div>
+            </div>
+        </div>
+        <div class="rightConent">
+            <div style="position: relative">
+                <input class="file-input" type="file" onchange="changeImgFile(this)" name="myfile">
+                <div class="file-font">上传头像</div>
+            </div>
+
+            <div class="inputBox">
+                <input class="nam" type="text" value="" placeholder="请输入姓名">
+                <input class="sex" type="text" value="" placeholder="请输入性别">
+                <input class="age" type="text" value="" placeholder="请输入年龄">
+                <input class="tel" type="text" value="" placeholder="请输入手机">
+                <!-- <input class="picname" type="text" value="" placeholder="图片名"> -->
+            </div>
+            <div id="saveBtn">保存图片</div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+
+<script src="js/html2canvas.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // canvas生成图片
+        $("#saveBtn").on("click", function () {
+            let getPixelRatio = function (context) { // 获取设备的PixelRatio
+                let backingStore = context.backingStorePixelRatio ||
+                    context.webkitBackingStorePixelRatio ||
+                    context.mozBackingStorePixelRatio ||
+                    context.msBackingStorePixelRatio ||
+                    context.oBackingStorePixelRatio ||
+                    context.backingStorePixelRatio || 0.5;
+                return (window.devicePixelRatio || 0.5) / backingStore;
+            };
+            let nam = $('.nam').val()
+            let sex = $('.sex').val()
+            let age = $('.age').val()
+            let tel = $('.tel').val()
+
+            if (nam) {
+                $('.x-nam').text(nam)
+            }
+            if (sex) {
+                $('.x-sex').text(sex)
+            }
+            if (age) {
+                $('.x-age').text(age)
+            }
+            if (tel) {
+                $('.x-tel').text(tel)
+            }
+
+            let generateName = $('.picname').val() ? $('.picname').val() + ".jpg" : '默认' + ".jpg"//图片名
+            let ImageContainer = document.getElementById("container");
+            let width = ImageContainer.offsetWidth;
+            let height = ImageContainer.offsetHeight;
+            let canvas = document.createElement("canvas");
+            let context = canvas.getContext('2d');
+            let scale = getPixelRatio(context);
+            canvas.width = width * scale;
+            canvas.height = height * scale;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            context.scale(scale, scale);
+
+            let opts = {
+                scale: scale,
+                canvas: canvas,
+                width: width,
+                height: height,
+                dpi: window.devicePixelRatio
+            };
+            html2canvas(ImageContainer, opts).then(function (canvas) {
+                context.imageSmoothingEnabled = false;
+                context.webkitImageSmoothingEnabled = false;
+                context.msImageSmoothingEnabled = false;
+                context.imageSmoothingEnabled = false;
+                let dataUrl = canvas.toDataURL('image/jpeg', 1.0);
+                dataURIToBlob(generateName, dataUrl, callback);
+            });
+        });
+    })
+
+    let dataURIToBlob = function (generateName, dataURI, callback) {
+        let binStr = atob(dataURI.split(',')[1]),
+            len = binStr.length,
+            arr = new Uint8Array(len);
+
+        for (let i = 0; i < len; i++) {
+            arr[i] = binStr.charCodeAt(i);
+        }
+
+        callback(generateName, new Blob([arr]));
+    }
+    let callback = function (generateName, blob) {
+        let triggerDownload = $("<a>").attr("href", URL.createObjectURL(blob)).attr("download", generateName).appendTo("body").on("click", function () {
+            if (navigator.msSaveBlob) {
+                return navigator.msSaveBlob(blob, generateName);
+            }
+        });
+        triggerDownload[0].click();
+        triggerDownload.remove();
+    };
+
+    function changeImgFile(input) {
+        let file = input.files[0];
+        if (window.FileReader) {
+            let fr = new FileReader();
+            fr.readAsDataURL(file);
+            fr.onloadend = function () {
+                document.getElementById("img").src = fr.result;
+            }
+        }
+    }
+
+</script>
